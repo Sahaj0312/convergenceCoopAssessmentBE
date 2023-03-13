@@ -7,6 +7,7 @@ import { Todo as TodoModel } from './models/todo';
 import Todos from './dataSources/todos';
 require('dotenv').config();
 
+// MongoDB connection
 const db = async () => {
     await mongoose.connect(process.env.URI, { useNewUrlParser: true, useUnifiedTopology: true })
 }
