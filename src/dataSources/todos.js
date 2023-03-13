@@ -61,12 +61,12 @@ export default class Todos extends MongoDataSource {
   async deleteTodo(args) {
     let id = args.id
     const existingTodo = await this.model.findOne({ id });
+    if (!existingTodo) {
+      throw new ApolloError("A todo with this ID does not exist.","INVALID_TODO_ID")
+    }
     const existingPwd = existingTodo.password;
     const existingUsername = existingTodo.username;
-    if (!existingTodo) {
-        throw new ApolloError("A todo with this ID does not exist.","INVALID_TODO_ID")
-    }
-
+  
     // Authenticating user that created the task
     if (!((await compare(args.password,existingPwd)) && (args.username == existingUsername))) {
         throw new ApolloError("Incorrect username or password. You can only delete if you have created this task.", "USER_VALIDATION_ERROR")
